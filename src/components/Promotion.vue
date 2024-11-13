@@ -32,7 +32,7 @@ export default {
 
 <style scoped>
     .Promotion{
-    width: 23.5rem;
+    width: 23rem;
     height: 16rem;
     background-color: rgb(206, 213, 205);
     margin-top: 2.1rem;
@@ -44,13 +44,14 @@ export default {
     position: relative;
     /* border: 1px solid red; */
     }
-    /* .Promotion img{
-      
-      
-      
-       
-        
-    } */
+    .Promotion img{
+        width:75%;
+        height: 75%;
+        object-fit: contain;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
     .Promotion h2{
         color: black;
         position: absolute;

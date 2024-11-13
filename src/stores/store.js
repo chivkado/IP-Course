@@ -1,30 +1,48 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
+import axios from 'axios';
 
 export const useProductStore = defineStore('product', {
   state: () => ({
     groups: [],
     promotions: [],
     categories: [],
-    products: []
+    products: [],
   }),
+  getters: {
+    getCategoriesByGroup: (state) => (groupName) => {
+      return state.categories.filter(category => category.groupName === groupName);
+    },
+    getProductsByGroup: (state) => (groupName) => {
+      return state.products.filter(product => product.groupName === groupName);
+    },
+    getProductsByCategory: (state) => (categoryId) => {
+      return state.products.filter(product => product.categoryId === categoryId);
+    },
+    getPopularProducts: (state) => {
+      return state.products.filter(product => product.countSold > 10);
+    }
+  },
+  
   actions: {
-    async fetchData() {
-      try {
-        // Fetch data from the backend server
-        const [categoriesResponse, promotionsResponse, groupsResponse, productsResponse] = await Promise.all([
-          fetch('http://localhost:3000/api/categories'),
-          fetch('http://localhost:3000/api/promotions'),
-          fetch('http://localhost:3000/api/groups'),
-          fetch('http://localhost:3000/api/products')
-        ]);
-
-        this.categories = await categoriesResponse.json();
-        this.promotions = await promotionsResponse.json();
-        this.groups = await groupsResponse.json();
-        this.products = await productsResponse.json();
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+    async fetchGroups() {
+      const response = await axios.get('http://localhost:3000/api/groups');
+      this.groups = response.data;
+    },
+    async fetchProducts() {
+      const response = await axios.get('http://localhost:3000/api/products');
+      
+      this.products = response.data;
+    },
+    async fetchCategories() {
+      const response = await axios.get('http://localhost:3000/api/categories');
+    
+      this.categories = response.data;
+    },
+    async fetchPromotions() {
+      const response = await axios.get('http://localhost:3000/api/promotions');
+  
+      this.promotions = response.data;
     }
   }
-})
+});
+

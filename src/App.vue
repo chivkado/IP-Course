@@ -1,177 +1,118 @@
 <template>
-   
   <div class="container">
     <div class="row1">
-      <Category v-for="(products, index) in products"
+      <Category v-for="(products, index) in productStore.products"
       :key="index"
       :image="products.image"
       :name="products.name"
-      :productCount="products.productCount"
+      :product-count="products.productCount"
       :color="products.color"
       />
     </div>
     <div class="row2">
-      <Promotion v-for="(Promotions,second) in Promotions"
+      <Promotion v-for="(promotions,second) in productStore.promotions"
       :key="second"
-      :image="Promotions.image"
-      :color="Promotions.color"
-      :title="Promotions.title"
+      :image="promotions.image"
+      :color="promotions.color"
+      :title="promotions.title"
       />
     </div>
-  <div class="row3">
-  <Products v-for="(products,third) in Products" 
-      :key="third"
-      :image="products.image"
-      :title="products.title"
-      :price="products.price"
-      :size="products.size"
-      :promotionAsPercentage="products.promotionAsPercentage"
-      :bgColor="products.bgColor"
-      :group="products.group"
-      :countSold="products.countSold"
-      :name="products.name"
-      :CategoryId="products.CategoryId",
-      :button="products.button"
-  />
-</div>
+    <div class="row3">
+      <Products 
+        v-for="(product, third) in products" 
+        :key="third" 
+        :image="product.image" 
+        :title="product.title" 
+        :price="product.price" 
+        :size="product.size" 
+        :promotionAsPercentage="product.promotionAsPercentage" 
+        :bgColor="product.bgColor" 
+        :group="product.group" 
+        :countSold="product.countSold" 
+        :name="product.name" 
+        :categoryId="product.categoryId" 
+        :button="product.button" 
+      />
+    </div>
   </div>
 </template>
 <script>
+import { onMounted } from 'vue';
 import Category from './components/Category.vue';
 import Promotion from './components/Promotion.vue';
-import Popular from './components/Popular.vue';
-import { useProductStore } from './store.js'
-
-import axios from 'axios';
-import Products from './components/Products.vue';
+import { useProductStore } from './stores/store';
 export default{
   name: 'App',
   components: {
     Category,
     Promotion,
-    Popular,
-   
-
-  },
-  
-  data(){
-    return{
-      products:[
-        // {img:'../image/buger.png', title:"Cake & Mile",item:14+"items",bgColor:'#F2FCE4'},
-        // {img:'../image/alpha.png', title:"Peach",item:17+"items", bgColor:'#FFFCEB'},
-        // {img:'../image/kiwi.png', title:"Oganic Kiwi",item:68+"items", bgColor:'#ECFFEC'},
-        // {img:'../image/apple.png', title:"Red Apple",item:34+"items", bgColor:'#FEEFEA'},
-        // {img:'../image/snac.png', title:"Snack",item:25+"items", bgColor:'#FFF3EB'},
-        // {img:'../image/black bluw.png', title:"Black plum",item:10+"items", bgColor:'#FFF3FF'},
-        // {img:'../image/vegatable.png', title:"Vegetable",item:65+"items", bgColor:'#F2FCE4'},
-        // {img:'../image/headphone.png', title:"Headphone",item:33+"items", bgColor:'#FFFCEB'},
-        // {img:'../image/sack.png', title:"Cake & Mile",item:54+"items", bgColor:'#F2FCE4'},
-        // {img:'../image/orange.png', title:"Orange",item:63+"items", bgColor:'#FFF3FF'},
-      ],
-      Promotions: [], // Array to store fetched promotion data
-
-      // Promotions:[
-      //   {bgImage:'../image/background1.jpg',bgColorSecond:'#F0E8D5',TittlePromotion:"Everyday Fresh & Clean with Our Products"},
-      //   {bgImage:'../image/background2.png',bgColorSecond:'#F3E8E8',TittlePromotion:"Make your Breakfast Healthy and Easy"},
-      //   {bgImage:'../image/background3.jpg',bgColorSecond:'#E7EAF3',TittlePromotion:"The best Organic Products Online"},
-      // ],
-//        Products:[
-//         // {Image:'../image/mango.jpg',h4:'Hodo Foods', title:'Seeds of Change Organic Quinoa, Brown, & Red Rice', widght:'500gram', price:'$2.51', discount:'$2.80', button:'< 1 >'},
-//         // {Image:'../image/corn.png',h4:'Hodo Foods', title:'All Natural Italian-Style Chicken Meatballs', widght:'500gram', price:'$2.51', discount:'$2.80', button:'Add + '},
-//         // {Image:'../image/orange.png',h4:'Hodo Foods', title:'All Natural Italian-Style Chicken Meatballs', widght:'500gram', price:'$2.51', discount:'$2.80', button:'Add + '},
-//         // {Image:'../image/chili.png',h4:'Hodo Foods', title:'All Natural Italian-Style Chicken Meatballs', widght:'500gram', price:'$2.51', discount:'$2.80', button:'Add + '},
-//         // {Image:'../image/lemon.png',h4:'Hodo Foods', title:'All Natural Italian-Style Chicken Meatballs', widght:'500gram', price:'$2.51', discount:'$2.80', button:'Add + '},
-//  ],
-    Products:[],
-    }
-    },
-  
- 
-   
-
-  methods: {
-    async fetchPromotions() {
-      try {
-         const response = await axios.get('http://localhost:3000/api/promotions');
-        this.Promotions = response.data; // Assuming API response structure { Promotions: [...] }
-      } catch (error) {
-        // console.error('Error fetching promotions:', error);
-      }
-    },
-    async fetchProduct() {
-      try {
-         const response = await axios.get('http://localhost:3000/api/categories');
-        this.products = response.data; // Assuming API response structure { Promotions: [...] }
-      } catch (error) {
-        // console.error('Error fetching promotions:', error);
-      }
-    },
-   
-
-  
-
-  },
-  mounted() {
-    this.fetchPromotions();
-    this.fetchProduct();
-    this.fetchGroup();
-    this.fetchProducts();
     
   },
-}
+  setup(){
+    const productStore = useProductStore();
+    
+    onMounted(async () => {
+    await productStore.fetchGroups();
+    console.log("Groups:", productStore.groups);
 
-const productStore = useProductStore()
-productStore.fetchData()
+    await productStore.fetchProducts();
+    console.log("Products:", productStore.products);
 
+    await productStore.fetchCategories();
+    console.log("Categories:", productStore.categories);
+
+    await productStore.fetchPromotions();
+    console.log("Promotions:", productStore.promotions);
+    });
+    return{
+      productStore,
+    };
+  },
+};
 </script>
 
 <style>
-.row3{
+.row3 {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.Link{
+
+.link, a {
   display: flex;
-  justify-content: space-between;
-  /* color: rgb(245, 228, 228); */
-}
-.link,a{
-  display:flex;
-  /* align-items: end; */
-  /* justify-content: space-evenly; */
   margin-right: 1rem;
   margin-top: 10px;
-  /* color: aliceblue; */
-  
 }
-h3{
+
+h3 {
   color: black;
   font-size: 28px;
   margin-top: 10px;
 }
-body{
+
+body {
   background-color: white;
 }
-.container{
+
+.container {
   width: 75rem;
-  height: 30rem;
+  height: auto; /* Adjusted for responsiveness */
   background-color: white;
   padding: 1rem;
-  /* border-radius: 5px; */
   border: none;
 }
-.row1{
+
+.row1 {
   width: 100%;
-  height: 31%;
+  height: auto; /* Adjusted for responsiveness */
   padding: 7px;
   display: flex;
   justify-content: space-between;
 }
-.row2{
+
+.row2 {
   width: 100%;
-  height: 69%;
-  /* background-color: rgb(241, 246, 173); */
+  height: auto; /* Adjusted for responsiveness */
   display: flex;
   justify-content: space-between;
 }

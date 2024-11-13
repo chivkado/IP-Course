@@ -19,15 +19,19 @@
       />
     </div>
   <div class="row3">
-  <Popular v-for="(popular,third) in Populars" 
+  <Products v-for="(products,third) in Products" 
       :key="third"
-      :image="popular.image"
-      :title="popular.title"
-      :price="popular.price"
-      :widght="popular.widght"
-      :discount="popular.discount"
-      :bgColor="popular.bgColor"
-      :button="popular.button"
+      :image="products.image"
+      :title="products.title"
+      :price="products.price"
+      :size="products.size"
+      :promotionAsPercentage="products.promotionAsPercentage"
+      :bgColor="products.bgColor"
+      :group="products.group"
+      :countSold="products.countSold"
+      :name="products.name"
+      :CategoryId="products.CategoryId",
+      :button="products.button"
   />
 </div>
   </div>
@@ -36,13 +40,18 @@
 import Category from './components/Category.vue';
 import Promotion from './components/Promotion.vue';
 import Popular from './components/Popular.vue';
+import { useProductStore } from './store.js'
+
 import axios from 'axios';
+import Products from './components/Products.vue';
 export default{
   name: 'App',
   components: {
     Category,
     Promotion,
     Popular,
+   
+
   },
   
   data(){
@@ -66,17 +75,20 @@ export default{
       //   {bgImage:'../image/background2.png',bgColorSecond:'#F3E8E8',TittlePromotion:"Make your Breakfast Healthy and Easy"},
       //   {bgImage:'../image/background3.jpg',bgColorSecond:'#E7EAF3',TittlePromotion:"The best Organic Products Online"},
       // ],
-       Populars:[
-        // {Image:'../image/mango.jpg',h4:'Hodo Foods', title:'Seeds of Change Organic Quinoa, Brown, & Red Rice', widght:'500gram', price:'$2.51', discount:'$2.80', button:'< 1 >'},
-        // {Image:'../image/corn.png',h4:'Hodo Foods', title:'All Natural Italian-Style Chicken Meatballs', widght:'500gram', price:'$2.51', discount:'$2.80', button:'Add + '},
-        // {Image:'../image/orange.png',h4:'Hodo Foods', title:'All Natural Italian-Style Chicken Meatballs', widght:'500gram', price:'$2.51', discount:'$2.80', button:'Add + '},
-        // {Image:'../image/chili.png',h4:'Hodo Foods', title:'All Natural Italian-Style Chicken Meatballs', widght:'500gram', price:'$2.51', discount:'$2.80', button:'Add + '},
-        // {Image:'../image/lemon.png',h4:'Hodo Foods', title:'All Natural Italian-Style Chicken Meatballs', widght:'500gram', price:'$2.51', discount:'$2.80', button:'Add + '},
- ]
+//        Products:[
+//         // {Image:'../image/mango.jpg',h4:'Hodo Foods', title:'Seeds of Change Organic Quinoa, Brown, & Red Rice', widght:'500gram', price:'$2.51', discount:'$2.80', button:'< 1 >'},
+//         // {Image:'../image/corn.png',h4:'Hodo Foods', title:'All Natural Italian-Style Chicken Meatballs', widght:'500gram', price:'$2.51', discount:'$2.80', button:'Add + '},
+//         // {Image:'../image/orange.png',h4:'Hodo Foods', title:'All Natural Italian-Style Chicken Meatballs', widght:'500gram', price:'$2.51', discount:'$2.80', button:'Add + '},
+//         // {Image:'../image/chili.png',h4:'Hodo Foods', title:'All Natural Italian-Style Chicken Meatballs', widght:'500gram', price:'$2.51', discount:'$2.80', button:'Add + '},
+//         // {Image:'../image/lemon.png',h4:'Hodo Foods', title:'All Natural Italian-Style Chicken Meatballs', widght:'500gram', price:'$2.51', discount:'$2.80', button:'Add + '},
+//  ],
+    Products:[],
     }
     },
   
-  
+ 
+   
+
   methods: {
     async fetchPromotions() {
       try {
@@ -94,15 +106,22 @@ export default{
         // console.error('Error fetching promotions:', error);
       }
     },
+   
+
+  
 
   },
   mounted() {
     this.fetchPromotions();
     this.fetchProduct();
+    this.fetchGroup();
+    this.fetchProducts();
+    
   },
 }
 
-
+const productStore = useProductStore()
+productStore.fetchData()
 
 </script>
 

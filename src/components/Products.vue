@@ -1,9 +1,16 @@
+<script setup>
+import { useProductStore } from './store.js'
+
+const productStore = useProductStore()
+</script>
+
 <template>
+
 <div class="CarD" >
     <div id="card1">
-        <div class="img1"><img :src="Image" alt=""></div>
+        <div class="image"><img :src="image" alt=""></div>
         <div class="text">
-            <h4>{{ h4 }}</h4>
+            <h4>{{ name }}</h4>
             <h1>{{ title }}</h1>
             <span>
                 <fa style="color: gold;" icon="star"/>
@@ -11,14 +18,14 @@
                 <fa style="color: gold;" icon="star"/>
                 <fa style="color: gold;" icon="star"/>
                 <fa  icon="star"/>
-                (4.0)
+                {{ rating }}
                 
             </span>
-            <h4>{{widght}}</h4>
+            <h4>{{size}}</h4>
             <div class="price">
                 <h1>{{price}}</h1>
-                <h4>{{ discount }}</h4>
-                <button>{{ button }}</button>
+                <h4>{{ promotionAsPercentage }}</h4>
+                <button>{{ countSold }}</button>
             </div>
         </div>
     </div>
@@ -27,15 +34,16 @@
 </template>
 <script>
 export default {
-    name: "Popular",
+    name: "Products",
     props: {
-        Image:String,
-        h4:String,
+        image:String,
+        name:String,
         title: String,
-        widght:String,
+        size:String,
         price: String,
-        discount: String,
-        button:String,
+        promotionAsPercentage: String,
+        countSold:String,
+        rating:String,
     },
 }
 </script>

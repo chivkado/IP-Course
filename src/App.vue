@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <div class="row1">
-      <Category v-for="(products, index) in productStore.products"
+      <Category v-for="(category, index) in productStore.categories"
       :key="index"
-      :image="products.image"
-      :name="products.name"
-      :product-count="products.productCount"
-      :color="products.color"
+      :image="category.image"
+      :name="category.name"
+      :product-count="category.productCount"
+      :color="category.color"
       />
     </div>
     <div class="row2">

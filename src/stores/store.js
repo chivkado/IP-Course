@@ -36,7 +36,12 @@ export const useProductStore = defineStore('product', {
     async fetchCategories() {
       const response = await axios.get('http://localhost:3000/api/categories');
     
-      this.categories = response.data;
+      this.categories = response.data.map(category => {
+        const split = category.image.split('\\');
+        // Prepend the base URL to the image filename
+        category.image = `http://localhost:3000/uploads/${split[1]}`;
+        return category;
+      });
     },
     async fetchPromotions() {
       const response = await axios.get('http://localhost:3000/api/promotions');

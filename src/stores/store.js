@@ -49,5 +49,5 @@ export const useProductStore = defineStore('product', {
       this.promotions = response.data;
     }
   }
+  
 });
-

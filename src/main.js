@@ -1,6 +1,7 @@
 import './assets/main.css'
 import '@fortawesome/fontawesome-free/css/all.css';
 
+
 // icon
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas, faS } from '@fortawesome/free-solid-svg-icons';
@@ -20,5 +21,5 @@ app.component('fa',FontAwesomeIcon)
 // 
 app.use(createPinia())
 app.use(router)
-
+app.use(router);
 app.mount('#app')

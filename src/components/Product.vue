@@ -143,7 +143,7 @@ h4 .promotion {
   border-radius: 5px;
   font-size: 11px;
   padding: 3px 10px;
-  background-color: white;
+  background-color: rgb(3, 180, 38);
   cursor: pointer; 
 }
 .productname {

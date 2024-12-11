@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es6",                   // Specify ECMAScript target version
+    "module": "commonjs",              // Specify module code generation
+    "strict": true,                    // Enable all strict type-checking options
+    "jsx": "preserve",                 // JSX code generation
+    "baseUrl": ".",                    // Base directory to resolve non-relative module names
+    "paths": {
+      "@/*": ["./src/*"]               // Alias for easier imports
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

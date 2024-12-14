@@ -23,3 +23,4 @@ app.use(createPinia())
 app.use(router)
 app.use(router);
 app.mount('#app')
+import '@fortawesome/fontawesome-free/css/all.css';

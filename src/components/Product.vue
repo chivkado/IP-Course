@@ -9,7 +9,7 @@
         <p class="brand">Hodo Foods</p>
         <h5 class="productname">{{ name }}</h5>
         <p class="icon">
-          <fa style="color: gold;" icon="star" v-for="n in 4" :key="n"/>
+          <fa style="color: gold;" icon="star" v-for="n in 4" :key="n" />
           <fa icon="star" v-if="rating > 4" />
           <span>({{ rating }})</span>
         </p>
@@ -17,8 +17,10 @@
         <h4>
           ${{ price }} <span class="promotion">${{ promotionAsPercentage }}</span>
         </h4>
-        <button type="button" class="butAdd" @click="goToDetail">Add+</button>
-      </div>
+        <router-link :to="{ name: 'ProductDetail' }">
+          <button type="button" class="butAdd" @click="goToDetail">Add+</button>
+        </router-link>     
+       </div>
     </div>
   </div>
 </template>
@@ -39,12 +41,16 @@ export default {
   },
   methods: {
     goToDetail() {
-      // Directly navigate to ProductDetail with the product ID
+      // Navigate to ProductDetail with the product ID
       this.$router.push({ name: 'ProductDetail', params: { id: this.productId } });
     },
   },
 };
 </script>
+
+<!-- <style scoped>
+/* Your existing styles */
+</style> -->
 
 <style scoped>
 .containe {

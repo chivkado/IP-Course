@@ -1,7 +1,9 @@
 <template>
     <nav class="navbar">
       <button class="category-button"> Browse All Categories <span class="arrow">▼</span></button>
-      <div class="hot-deals">  Hot Deals</div>
+      <div class="hot-deals" @click="goToHeader">
+      Hot Deals
+    </div>
       <div class="nav-links">
         <router-link v-for="link in links" :key="link.name" :to="link.path">{{ link.name }}</router-link>
       </div>
@@ -24,7 +26,17 @@
         ],
       };
     },
-  };
+    methods: {
+    goToHeader() {
+      this.$router.push({ name: 'header' }); // Adjust the route name as needed
+    },
+    browseCategories() {
+      // Add functionality for browsing categories if needed
+    },
+  },
+};
+  
+ 
   </script>
   
   <style scoped>

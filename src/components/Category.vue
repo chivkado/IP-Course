@@ -1,5 +1,5 @@
 <template>
-    <div class="card" :style="{backgroundColor:color}">
+    <router-link :to="{ name: 'header' }" class="card" :style="{ backgroundColor: color }">
         <div class="card-img">
             <img :src="image" :alt="title">
         </div>
@@ -7,7 +7,8 @@
             <h4>{{name }}</h4>
             <p>{{ productCount }}</p>
         </div>
-    </div>
+    </router-link>
+    <!-- </div> -->
 </template>
 
 <script>

@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   app:
     build: .
@@ -8,21 +10,24 @@ services:
       - ./php.ini:/usr/local/etc/php/php.ini
     networks:
       - laravel
+
   webserver:
     image: nginx:latest
     container_name: nginx_server
     ports:
-      - "8100:80"
+      - "8100:80"  # Host 8100 maps to container's port 80
     volumes:
       - ./laravel:/var/www
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - laravel
+
   db:
     image: mysql:8.0
     container_name: mysql_db
     ports:
-      - "3307:3306"
+
+      - "3307:3306"  # Host 3307 maps to container's port 3306
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: laravel
@@ -30,7 +35,8 @@ services:
       MYSQL_PASSWORD: laravel
     networks:
       - laravel
+
+
 networks:
   laravel:
     driver: bridge
-    

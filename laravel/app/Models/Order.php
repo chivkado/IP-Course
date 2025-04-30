@@ -3,16 +3,41 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class Order extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
-    protected $fillable = ['order_date', 'customer_id', 'total_amount'];
+    protected $table = 'order';
+    protected $fillable = ['customer_id', 'total_amount', 'status', 'order_date'];
 
-    public function products()
+    public function customer()
     {
-        return $this->belongsToMany(Product::class, 'order_product'); // Many products can belong to this order
+        return $this->belongsTo(Customer::class);
     }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function orderProducts()
+    {
+        return $this->hasMany(OrderProduct::class);
+    }
+
+    protected function orderDate(): Attribute
+{
+    return Attribute::make(
+        set: fn ($value) => Carbon::createFromFormat('d/m/Y H:i:s', $value)->format('Y-m-d H:i:s'),
+        get: fn ($value) => Carbon::parse($value)->format('d/m/Y H:i:s')
+    );
+}
+    protected $dates = ['deleted_at'];
+
 }

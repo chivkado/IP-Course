@@ -26,8 +26,7 @@ services:
     image: mysql:8.0
     container_name: mysql_db
     ports:
-
-      - "3307:3306"  # Host 3307 maps to container's port 3306
+      - "3307:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: laravel
@@ -36,6 +35,19 @@ services:
     networks:
       - laravel
 
+  db_test:
+    image: mysql:8.0
+    container_name: mysql_db_test
+    restart: always
+    environment:
+      MYSQL_DATABASE: laravel_test
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: laravel_test
+      MYSQL_PASSWORD: laravel_test
+    ports:
+      - "3308:3306" # ⚠️ Use different port from main db
+    networks:
+      - laravel
 
 networks:
   laravel:

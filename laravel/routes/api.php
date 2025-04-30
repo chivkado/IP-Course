@@ -39,4 +39,5 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
     Route::post('/find-or-create', 'findOrCreateProduct'); // Find or create a product
     Route::post('/update-or-create', 'updateOrCreateProduct'); // Update or create a product
     Route::delete('/truncate', 'truncateProducts'); // Truncate the products table
+    
 });

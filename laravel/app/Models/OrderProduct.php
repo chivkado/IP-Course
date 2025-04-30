@@ -6,13 +6,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderProduct extends Model
 {
+    // ✅ Specify the correct table name (your table is 'order_product')
+    protected $table = 'order_product';
+
+    // ✅ Allow mass assignment if needed
+    protected $fillable = [
+        'order_id',
+        'product_id',
+        'quantity',
+        'price',
+    ];
+
     public function product()
     {
-        return $this->belongsTo(Product::class); // An order product belongs to a product
+        return $this->belongsTo(Product::class);
     }
 
     public function order()
     {
-        return $this->belongsTo(Order::class); // An order product belongs to an order
+        return $this->belongsTo(Order::class);
     }
 }

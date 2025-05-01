@@ -19,7 +19,6 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->json("images")->nullable();
             $table->timestamps();
-
             $table->foreign('category_id')->references('id')->on('categories');
         });
     }

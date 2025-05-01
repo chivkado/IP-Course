@@ -23,6 +23,7 @@ Route::controller(CategoryController::class)->prefix('categories')->group(functi
     Route::get('/count-active', 'countActiveCategories'); // Count active categories
     Route::post('/find-or-create', 'findOrCreateCategory'); // Find or create a category
     Route::delete('/truncate', 'truncateCategories'); // Truncate the categories table
+
 });
 
 // Product Routes
@@ -39,5 +40,14 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
     Route::post('/find-or-create', 'findOrCreateProduct'); // Find or create a product
     Route::post('/update-or-create', 'updateOrCreateProduct'); // Update or create a product
     Route::delete('/truncate', 'truncateProducts'); // Truncate the products table
-    
+    Route::patch('/products/{id}', [ProductController::class, 'update']);
+    Route::patch('/{id}', 'update');
+
+});
+Route::controller(ProductController::class)->prefix('products')->group(function () {
+    Route::get('/', 'index');
+    Route::post('/', 'store');
+    Route::get('/{id}', 'show');
+    Route::patch('/{id}', 'update'); // ✅ must include patch
+    Route::delete('/{id}', 'destroy');
 });

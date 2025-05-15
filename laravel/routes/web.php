@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UploadController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ImageController;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,4 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+
+Route::get('/upload_file', fn() => view('upload_file'));
+Route::post('/upload', [UploadController::class, 'upload'])
+    ->name('upload');

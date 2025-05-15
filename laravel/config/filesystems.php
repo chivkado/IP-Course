@@ -7,9 +7,8 @@ return [
     | Default Filesystem Disk
     |--------------------------------------------------------------------------
     |
-    | Here you may specify the default filesystem disk that should be used
-    | by the framework. The "local" disk, as well as a variety of cloud
-    | based disks are available to your application for file storage.
+    | The default disk that Laravel should use. You can switch between 'local',
+    | 'public', or 'minio' by setting FILESYSTEM_DISK in your .env file.
     |
     */
 
@@ -20,9 +19,7 @@ return [
     | Filesystem Disks
     |--------------------------------------------------------------------------
     |
-    | Below you may configure as many filesystem disks as necessary, and you
-    | may even configure multiple disks for the same driver. Examples for
-    | most supported storage drivers are configured here for reference.
+    | You may define multiple disks for different storage drivers.
     |
     | Supported drivers: "local", "ftp", "sftp", "s3"
     |
@@ -33,7 +30,6 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
-            'serve' => true,
             'throw' => false,
             'report' => false,
         ],
@@ -60,6 +56,17 @@ return [
             'report' => false,
         ],
 
+        'minio' => [
+            'driver' => 's3',
+            'key'    => env('MINIO_ACCESS_KEY_ID'),
+            'secret' => env('MINIO_SECRET_ACCESS_KEY'),
+            'region' => env('MINIO_REGION', 'us-east-1'),
+            'bucket' => env('MINIO_BUCKET'),
+            'endpoint' => env('MINIO_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'throw' => false,
+            'report' => false,
+        ],
     ],
 
     /*
@@ -67,9 +74,7 @@ return [
     | Symbolic Links
     |--------------------------------------------------------------------------
     |
-    | Here you may configure the symbolic links that will be created when the
-    | `storage:link` Artisan command is executed. The array keys should be
-    | the locations of the links and the values should be their targets.
+    | These links are created when you run `php artisan storage:link`.
     |
     */
 

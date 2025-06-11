@@ -1,12 +1,22 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './modules/user/user.module';
 import { TaskModule } from './modules/task/task.module';
 
 @Module({
-  imports: [UserModule, TaskModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,  // Makes ConfigService available app-wide
+    }),
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: 'db.sqlite',
+      autoLoadEntities: true,
+      synchronize: true,
+    }),
+    UserModule,
+    TaskModule,
+  ],
 })
 export class AppModule {}

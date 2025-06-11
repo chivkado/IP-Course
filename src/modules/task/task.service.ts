@@ -1,39 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Task } from './task.entity';
+import { CreateTaskDto } from './dto/create-task.dto';
 
 @Injectable()
 export class TaskService {
-  getTask(id: string) {
-    console.log(id);
-    return {
-      name: 'Task 1',
-      description: 'Description of Task 1',
-      createdAt: new Date().toISOString(),
-      completedAt: null,
-      userId: 1,
-    };
+  constructor(
+    @InjectRepository(Task)
+    private taskRepo: Repository<Task>,
+  ) {}
+
+  async findOne(id: number) {
+    const task = await this.taskRepo.findOneBy({ id });
+    if (!task) throw new NotFoundException(`Task with id ${id} not found`);
+    return task;
   }
-  createTask(body: any) {
-    console.log(body);
-    return {
-      name: 'Task 1',
-      description: 'Description of Task 1',
-      createdAt: new Date().toISOString(),
-      completedAt: null,
-      userId: 1,
-    };
-  }
-  updateTask(id: string, body: any) {
-    console.log(body);
-    return {
-      name: 'Task 1',
-      description: 'Description of Task 1',
-      createdAt: new Date().toISOString(),
-      completedAt: null,
-      userId: 1,
-    };
-  }
-  deleteTask(id: string) {
-    console.log(id);
-    return { message: 'success' };
+
+  async create(dto: CreateTaskDto) {
+    // user validation logic here...
+    const task = this.taskRepo.create(dto);
+    return this.taskRepo.save(task);
   }
 }

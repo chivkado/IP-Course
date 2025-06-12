@@ -1,81 +1,33 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { BookService } from './book.service';
+import { Booking } from './entities/booking.entity';
+import { CreateBookingInput } from './dto/create-booking.input';
+import { UpdateBookingInput } from './dto/update-booking.input';
 
-@Resolver('Book')
+@Resolver(() => Booking)
 export class BookResolver {
-  private books = [
-    {
-      id: 1,
-      title: 'Mathematic',
-      author: 'Dara',
-      price: 10,
-    },
-    {
-      id: 2,
-      title: 'Physic',
-      author: 'Sok',
-      price: 20,
-    },
-    {
-      id: 3,
-      title: 'Chemistry',
-      author: 'Ratha',
-      price: 15,
-    },
-  ];
-  @Query('books')
-  getAllBooks() {
-    return this.books;
+  constructor(private readonly bookService: BookService) {}
+
+  @Mutation(() => Booking)
+  bookHotel(@Args('input') input: CreateBookingInput) {
+    return this.bookService.create(input);
   }
 
-  @Query('book')
-  getBookById(@Args('id') id: number) {
-    return this.books.find((book) => book.id == id);
+  @Mutation(() => Booking)
+  updateBooking(@Args('input') input: UpdateBookingInput) {
+    return this.bookService.update(input);
   }
 
-  @Mutation('addBook')
-  addBook(@Args('title') title: string, @Args('price') price: number) {
-    const sortedBooks = this.books.sort((a, b) => a.id - b.id);
-    const lastId =
-      sortedBooks.length > 0 ? sortedBooks[sortedBooks.length - 1].id : 0;
-    const newBook = {
-      id: lastId + 1,
-      title,
-      price,
-      author: 'Unknown',
-    };
-    this.books.push(newBook);
-    return newBook;
+  @Mutation(() => Boolean)
+  cancelBooking(@Args('id', { type: () => Int }) id: number) {
+    return this.bookService.remove(id);
   }
-  @Mutation('updateBook')
-  updateBook(
-    @Args('id') id: number,
-    @Args('title') title: string,
-    @Args('price') price: number,
+
+  @Query(() => [Booking])
+  bookingsBetweenDates(
+    @Args('start') start: Date,
+    @Args('end') end: Date,
   ) {
-    const bookIndex = this.books.findIndex((book) => book.id == id);
-    if (bookIndex === -1) {
-      throw new Error('Book not found');
-    }
-    const updatedBook = {
-      ...this.books[bookIndex],
-      title,
-      price,
-    };
-    this.books[bookIndex] = updatedBook;
-    return updatedBook;
-  }
-  @Mutation('deleteBook')
-  deleteBook(@Args('id') id: number) {
-    try {
-      const bookIndex = this.books.findIndex((book) => book.id == id);
-      if (bookIndex === -1) {
-        return false;
-      }
-      this.books.splice(bookIndex, 1);
-      return true;
-    } catch (e) {
-      console.error(e);
-      return false;
-    }
+    return this.bookService.findBetweenDates(start, end);
   }
 }
